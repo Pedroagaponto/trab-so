@@ -57,7 +57,7 @@ int main(int argc, char *argv[])
 
 	if ((msqid_snd = msgget(MATRICULA, 0666 )) == -1) {
 		perror("msgget");
-		fprintf(stderr, "\nDaemon exec_procd nao esta executando.\n");
+		fprintf(stderr, "\nDaemon execprocd nao esta executando.\n");
 		return -2;
 	}
 
