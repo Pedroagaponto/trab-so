@@ -10,6 +10,7 @@
 #define EXE_MAX 250
 #define PWD_MAX 1000
 #define PARAM_MAX 250
+#define MATRICULA 100119191
 
 typedef enum tagStatus
 {
@@ -54,7 +55,7 @@ int main(int argc, char *argv[])
 		return -1;
 	}
 
-	if ((msqid_snd = msgget(100119191, 0666 )) == -1) {
+	if ((msqid_snd = msgget(MATRICULA, 0666 )) == -1) {
 		perror("msgget");
 		fprintf(stderr, "\nDaemon exec_procd nao esta executando.\n");
 		return -2;
