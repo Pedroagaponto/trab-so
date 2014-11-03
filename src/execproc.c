@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
 
 	if ((msqid_snd = msgget(100119191, 0666 )) == -1) {
 		perror("msgget");
-		printf("\nDaemon exec_procd nao esta executando.\n");
+		fprintf(stderr, "\nDaemon exec_procd nao esta executando.\n");
 		return -2;
 	}
 
@@ -78,7 +78,7 @@ int main(int argc, char *argv[])
 
 	if (msgctl(msqid_rcv, IPC_RMID, 0) == -1)
 	{
-		printf("\nFalha ao remover processo\n");
+		fprintf(stderr, "\nFalha ao remover message queue.\n");
 		return -4;
 	}
 
@@ -91,7 +91,7 @@ Status process_arguments(int argc, char *argv[], struct proc_msgbuf *request)
 
 	if (argc < 3)
 	{
-		printf("\nSolicita ao escalonador que execute um processo\n"
+		fprintf(stderr, "\nSolicita ao escalonador que execute um processo\n"
 				"Modo de uso:\n"
 				"%s <arquivo executavel> <prioridade={1,2,3}>"
 				"[<param1> <param2> ... <paramn>]\n\n", argv[0]);
@@ -102,12 +102,12 @@ Status process_arguments(int argc, char *argv[], struct proc_msgbuf *request)
 	len = strlen(argv[1]);
 	if (len > EXE_MAX || len < 1)
 	{
-		printf("Tamanho de executavel muito grande, abortando");
+		fprintf(stderr, "Tamanho de executavel muito grande, abortando.\n");
 		return E_long_exe;
 	}
 	if (!file_exist(argv[1]))
 	{
-		printf("Arquivo executavel inacessivel, abortando");
+		fprintf(stderr, "Arquivo executavel inacessivel, abortando.\n");
 		return E_file;
 	}
 	strcpy(request->process, argv[1]);
@@ -116,7 +116,7 @@ Status process_arguments(int argc, char *argv[], struct proc_msgbuf *request)
 	request->priority = atoi(argv[2]);
 	if (request->priority > 3 || request->priority < 1)
 	{
-		printf("Prioridade invalida, abortando");
+		fprintf(stderr, "Prioridade invalida, abortando.\n");
 		return E_prio;
 	}
 	request->mtype = request->priority;
@@ -129,7 +129,7 @@ Status process_arguments(int argc, char *argv[], struct proc_msgbuf *request)
 		len += strlen(argv[i]) + 1;
 		if (len >= PARAM_MAX)
 		{
-			printf("Lista de parametros muito longa, abortando");
+			fprintf(stderr, "Lista de parametros muito longa, abortando.\n");
 			return E_param;
 		}
 		strcat(request->parameters, " ");
@@ -139,7 +139,8 @@ Status process_arguments(int argc, char *argv[], struct proc_msgbuf *request)
 
 	if (getcwd(request->pwd, PWD_MAX) == NULL)
 	{
-		printf("Caminho de pasta invalido ou muito grande");
+		fprintf(stderr, "Caminho de pasta invalido ou muito grande, "
+						"abortando.\n");
 		return E_long_pwd;
 	}
 
