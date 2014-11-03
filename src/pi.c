@@ -26,11 +26,12 @@ int main (){
 void pi_digits(int digits) {
     int carry = 0;
     int arr[digits + 1];
-    for (int i = 0; i <= digits; ++i)
+	int i, j;
+    for (i = 0; i <= digits; ++i)
         arr[i] = ARRINIT;
-    for (int i = digits; i > 0; i-= 14) {
+    for (i = digits; i > 0; i-= 14) {
         int sum = 0;
-        for (int j = i; j > 0; --j) {
+        for (j = i; j > 0; --j) {
             sum = sum * j + SCALE * arr[j];
             arr[j] = sum % (j * 2 - 1);
             sum /= j * 2 - 1;
