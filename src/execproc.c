@@ -62,8 +62,11 @@ int main(int argc, char *argv[])
 	}
 
 	key = ftok(request.process, 'm');
-	if ((msqid_rcv = msgget(key, 0666 | IPC_CREAT)) == -1) {
+	if ((msqid_rcv = msgget(key, 0666 | IPC_CREAT | IPC_EXCL)) == -1) {
 		perror("msgget");
+		fprintf(stderr, "\nFalha ao criar fila para a resposta.\n"
+				"Execute: \"ipcrm -Q %d\" para remover a fila ja existente\n",
+				key);
 		return -3;
 	}
 
@@ -79,7 +82,7 @@ int main(int argc, char *argv[])
 
 	if (msgctl(msqid_rcv, IPC_RMID, 0) == -1)
 	{
-		fprintf(stderr, "\nFalha ao remover message queue.\n");
+		fprintf(stderr, "\nFalha ao remover message queue: %d\n", key);
 		return -4;
 	}
 
