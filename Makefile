@@ -8,7 +8,7 @@ OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
 
 CFLAGS = -Wall -Wextra -g
 
-BIN = execproc
+BIN = execproc execprocd
 
 all: $(BIN)
 
@@ -17,6 +17,9 @@ $(ODIR)/%.o: $(SDIR)/%.c
 	$(CC) -c -o $@ $< $(CFLAGS)
 
 execproc: $(ODIR)/execproc.o
+	$(CC) -o $@ $^ $(CFLAGS) $(LIBS)
+
+execprocd: $(ODIR)/execprocd.o
 	$(CC) -o $@ $^ $(CFLAGS) $(LIBS)
 
 .PHONY: clean
