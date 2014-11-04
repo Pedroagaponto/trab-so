@@ -7,7 +7,7 @@ TDIR = tests
 
 CFLAGS = -Wall -Wextra -g
 
-BIN = execproc execprocd
+BIN = execproc execprocd cancela_proc
 TESTS = pi
 
 all: tests bin
@@ -23,6 +23,9 @@ execproc: $(ODIR)/execproc.o
 	$(CC) -o $@ $^ $(CFLAGS)
 
 execprocd: $(ODIR)/execprocd.o
+	$(CC) -o $@ $^ $(CFLAGS)
+
+cancela_proc: $(ODIR)/cancela_proc.o
 	$(CC) -o $@ $^ $(CFLAGS)
 
 #Executaveis de teste para o execproc
