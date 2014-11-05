@@ -10,6 +10,7 @@
 #include <sys/time.h>
 #include <signal.h>
 #include <sys/signalfd.h>
+#include <unistd.h>
 
 
 #define NFDS 3
@@ -38,6 +39,7 @@ struct pid_msgbuf
 int handle_signal (int signal_fd);
 int handle_cancel (int msqid_cancel);
 int handle_exec (int msqid_exec);
+int write_pid ();
 
 int main ()
 {
@@ -136,6 +138,7 @@ int main ()
 		fprintf(stderr, "\nFalha ao remover message cancel queue.\n");
 		return -4;
 	}
+	
 
 	return 0;
 }
@@ -172,5 +175,22 @@ int handle_exec (int msqid_exec)
 
 	*/
 	return msqid_exec;
+}
+
+int write_pid ()
+{
+	FILE *fp;
+	pid_t pid = getpid();
+	
+	fp = fopen("execprocd.pid", "w");
+	if(!fp) {
+		printf("Erro ao abrir o arquivo execprocd.pid");
+		return -1;
+   }
+	
+	fprintf(fp, "%d", pid);
+	fclose(fp);
+
+	return 0; //Sucess
 }
 
