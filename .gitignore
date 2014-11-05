@@ -32,3 +32,6 @@ execprocd
 cancela_proc
 termina_execprocd
 tests/
+
+# Vim temp files
+*.swp
